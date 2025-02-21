@@ -5,6 +5,8 @@ import 'package:flutter_svg/svg.dart';
 
 @RoutePage()
 class MainLayout extends StatelessWidget {
+  const MainLayout({super.key});
+
   @override
   Widget build(BuildContext context) {
     return AutoTabsScaffold(

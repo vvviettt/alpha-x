@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:alphax/config/theme/colors.dart';
 import 'package:alphax/core/constants/constants.dart';
+import 'package:alphax/core/constants/size.dart';
 import 'package:flutter/material.dart';
 
 class AppTheme {
@@ -76,6 +77,26 @@ class AppTheme {
         trackOutlineColor:
             WidgetStateProperty.all<Color>(chosenColor.backgroundColor),
       ),
+      inputDecorationTheme: InputDecorationTheme(
+        fillColor: chosenColor.inputFill,
+        filled: true,
+        hintStyle: t_t14_400.copyWith(color: chosenColor.inputPlaceholder),
+        contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+        floatingLabelAlignment: FloatingLabelAlignment.center,
+        enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(width: 1, color: Colors.transparent),
+            borderRadius: BorderRadius.all(Radius.circular(12))),
+        focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(width: 1, color: chosenColor.inputBorder),
+            borderRadius: BorderRadius.all(Radius.circular(12))),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+          style: ButtonStyle(
+              backgroundColor: WidgetStatePropertyAll(chosenColor.blackColor),
+              padding: WidgetStatePropertyAll(EdgeInsets.all(0)),
+              shape: WidgetStatePropertyAll(RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+              )))),
     );
   }
 }
