@@ -1,11 +1,37 @@
 version: '3.9'
 services:
-  db:
-    image: mongo:6-jammy
+  mongo:
+    image: mongo:6
+    container_name: mongo
+    restart: always
     ports:
       - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: sa
+      MONGO_INITDB_ROOT_PASSWORD: Password123
+      MONGO_INITDB_DATABASE: admin
+
+    entrypoint:
+      - bash
+      - -c
+      - |
+        cp /keyfile /mongo_keyfile
+        chmod 400 /mongo_keyfile
+        chown 999:999 /mongo_keyfile
+        exec docker-entrypoint.sh $$@
+    command: 'mongod --bind_ip_all --replSet rs0 --keyFile /mongo_keyfile'
     volumes:
-      - ./docker/dbdata6:/data/db
+      - ./keyfile:/keyfile
+
+  mongo-setup:
+    image: mongo:6
+    container_name: mongo_setup
+    depends_on:
+      - mongo
+    restart: on-failure
+    entrypoint: ['/bin/bash', '/script/setup_mongo.sh']
+    volumes:
+      - ./script/setup_mongo.sh:/script/setup_mongo.sh
   redis:
     image: redis:latest
     restart: always
@@ -18,3 +44,11 @@ services:
       - REDIS_PASSWORD=password
       - REDIS_PORT=6379
       - REDIS_DATABASE=1
+volumes:
+  mongo1-data:
+  mongo2-data:
+  mongo3-data:
+
+networks:
+  mongo-cluster:
+    driver: bridge
